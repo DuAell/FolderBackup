@@ -1,7 +1,5 @@
 language: csharp
 os: windows
-mono: none
-dotnet: 3.1.101
 solution: FolderBackup.sln
 script:
   - dotnet restore
