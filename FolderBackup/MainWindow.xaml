@@ -3,10 +3,126 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:FolderBackup"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        xmlns:model="clr-namespace:FolderBackup.Model"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow"
+        Height="450"
+        Width="800"
+        DataContext="{Binding MainViewModel, Source={StaticResource Locator}}">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="TrueToVisibleConverter" />
+    </Window.Resources>
     <Grid>
-
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Label HorizontalAlignment="Right"
+                       Grid.Column="0"
+                       FontSize="18">Select configuration:</Label>
+                <ComboBox ItemsSource="{Binding Configuration.BackupConfigurations}"
+                          SelectedItem="{Binding BackupConfigurationSelected}"
+                          DisplayMemberPath="Name"
+                          HorizontalAlignment="Left"
+                          FontSize="16"
+                          Grid.Column="1"
+                          MinWidth="150"
+                          Margin="5" />
+            </Grid>
+            <Grid Grid.Row="1" Margin="0, 40, 0, 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0"
+                        Command="{Binding BackupCommand}"
+                        Background="IndianRed"
+                        Height="50"
+                        Width="200"
+                        BorderThickness="0">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius"
+                                    Value="5" />
+                        </Style>
+                    </Button.Resources>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontSize="20"
+                                   Foreground="White">Backup</TextBlock>
+                        <fa:ImageAwesome Icon="Download"
+                                         Foreground="White"
+                                         VerticalAlignment="Center"
+                                         HorizontalAlignment="Center"
+                                         Height="20"
+                                         Margin="10,0" />
+                    </StackPanel>
+                </Button>
+                <Button Grid.Column="1"
+                        Command="{Binding RestoreCommand}"
+                        Background="DarkOliveGreen"
+                        Height="50"
+                        Width="200"
+                        BorderThickness="0">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius"
+                                    Value="5" />
+                        </Style>
+                    </Button.Resources>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontSize="20"
+                                   Foreground="White">Restore</TextBlock>
+                        <fa:ImageAwesome Icon="Upload"
+                                         Foreground="White"
+                                         VerticalAlignment="Center"
+                                         HorizontalAlignment="Center"
+                                         Height="20"
+                                         Margin="10,0" />
+                    </StackPanel>
+                </Button>
+            </Grid>
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <ListBox Grid.Column="1"
+                         ItemsSource="{Binding BackupConfigurationSelected.Backups}"
+                         Margin="20"
+                         BorderBrush="LightGray"
+                         SelectedItem="{Binding BackupSelected}"
+                         Grid.IsSharedSizeScope="True">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="model:Backup">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition SharedSizeGroup="Name" />
+                                    <ColumnDefinition SharedSizeGroup="CreationTime" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0"
+                                           Text="{Binding Name}" />
+                                <TextBlock Grid.Column="1"
+                                           Text="{Binding DateTime}"
+                                           Margin="20, 0, 0, 0"
+                                           TextAlignment="Right"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+        </Grid>
+        <fa:ImageAwesome Icon="Refresh"
+                         Spin="True"
+                         Foreground="LightGray"
+                         Margin="70"
+                         Visibility="{Binding IsWorking, Converter={StaticResource TrueToVisibleConverter}}" />
     </Grid>
 </Window>
