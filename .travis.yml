@@ -1,6 +1,0 @@
-language: csharp
-os: windows
-solution: FolderBackup.sln
-script:
-  - dotnet restore
-  - msbuild /p:Configuration=Release FolderBackup.sln
