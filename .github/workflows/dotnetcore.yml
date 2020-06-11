@@ -16,7 +16,7 @@ jobs:
     - name: Install SonarQube
       run: dotnet tool install --global dotnet-sonarscanner
     - name: Start SonarQube
-      run: dotnet sonarscanner begin /k:"DuAell_FolderBackup" /o:"duaell" /d:sonar.login="03ac273894310d4f55f42a06cf27bcb2c432d2bc" /d:sonar.host.url=https://sonarcloud.io"
+      run: dotnet sonarscanner begin /k:"DuAell_FolderBackup" /o:"duaell" /d:sonar.login="03ac273894310d4f55f42a06cf27bcb2c432d2bc" /d:sonar.host.url="https://sonarcloud.io"
     - name: Build with dotnet
       run: dotnet build --configuration Release
     - name: End SonarQube
