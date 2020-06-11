@@ -1,5 +1,7 @@
 name: .NET Core
-
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 on: [push]
 
 jobs:
@@ -13,5 +15,11 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 2.2.108
+    - name: Install SonarQube
+      run: dotnet tool install --global dotnet-sonarscanner
+    - name: Start SonarQube
+      run: dotnet sonarscanner begin /k:"DuAell_FolderBackup" /o:"duaell" /d:sonar.host.url="https://sonarcloud.io"
     - name: Build with dotnet
       run: dotnet build --configuration Release
+    - name: End SonarQube
+      run: dotnet sonarscanner end
